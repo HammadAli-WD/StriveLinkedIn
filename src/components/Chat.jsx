@@ -14,9 +14,9 @@ export default function Chat() {
 	const [message, setMessage] = React.useState("");
 	const [messages, setMessages] = React.useState([]);
 	const [showModal, setShowModal] = React.useState(true);
-	const [recipient, setrecipient] = React.useState("");
-	const [list, setlist] = React.useState([]);
-	const [open, setopen] = React.useState(false);
+	const [recipient, setRecipient] = React.useState("");
+	const [list, setList] = React.useState([]);
+	const [open, setOpen] = React.useState(false);
 
 	React.useEffect(() => {
 		console.log(messages);
@@ -28,9 +28,9 @@ export default function Chat() {
 			from: msg.from,
 			text: msg.message,
 		  })));
-		  socket.on("list", (list) => setlist({
+		  socket.on("list", (list) => setList({
 			list:list,
-		  }),setrecipient({			
+		  }),setRecipient({			
 			recipient: list[0]
 		  }));
 		 
@@ -76,7 +76,7 @@ const sendMessage = (e) => {
 
 const sendUser = () => {
     socket.emit("setUsername", {
-      username: this.state.username,
+      username: username,
     });
 
     fetch(
@@ -87,7 +87,7 @@ const sendUser = () => {
       .then((data) => {
         {
         
-          setMessages({ messages: data });
+          setMessages((messages) => messages.concat(data));
         }
       });
 
@@ -100,7 +100,7 @@ const toggleModal = () => {
 		if (username !== null) setShowModal(!showModal);
 };
 const toggleChat = () => {
-	setopen(!open);
+	setOpen(!open);
 };
 	return (
 		<>
@@ -205,7 +205,7 @@ const toggleChat = () => {
             </Modal.Body>
           </Modal.Header>
           <Modal.Footer>
-            <Button onClick={toggleModal}>Submit</Button>
+            <Button onClick={sendUser}>Submit</Button>
           </Modal.Footer>
         </Modal>
 		</div>
