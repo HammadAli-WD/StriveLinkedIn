@@ -54,12 +54,11 @@ const sendMessage = (e) => {
 					text: message,
 					to: recipient,
 				});
-				setMessage({
-					messages: messages.concat({
+				setMessages(messages => messages.concat({
 					  from: username,
 					  text: message,
 					})
-		})
+		)
 		}else {
 			socket.emit("bmsg", {
 			user: username,
@@ -140,8 +139,9 @@ const toggleChat = () => {
             {messages.map((msg, i) => (													
               <li key={i}>
 																<div class="receive-msg">
-                <p className="pl-2 pr-2 rounded" > {msg.from}</p>
+                <p className="pl-2 pr-2 rounded" > {msg.from && msg.from.username}</p>
 				<p>{msg.text}</p>
+				{console.log('MSG!', msg)}
 																</div>
               </li>
             ))}
@@ -166,6 +166,7 @@ const toggleChat = () => {
 
 
 				<form onSubmit={sendMessage} className="col-md-12 message-box border pl-2 pr-2 border-top-0">
+					{console.log('in render', message)}
 				<input autoComplete="off"
            value={message}
            onChange={handleMessage} type="text" className="pl-0 pr-0 w-100" placeholder="Type a message..." />
